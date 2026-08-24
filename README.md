@@ -55,4 +55,4 @@ This project performs an end-to-end data analytics solution applying **Unsupervi
 ## 🚀 How to Open the Project
 1. Clone this repository to your local computer.
 2. Open `RFM_Model_Analysis.ipynb` inside Jupyter Notebook/Google Colab to view the complete Python data science workflow.
-3. Open `power_bi/Lexon_Beauty_RFM_Dashboard.pbix` using **Power BI Desktop** to explore the fully functional interactive report, modify time ranges using the date slicer, or drill down into individual customer segmentation profiles.
+3. Open `Power BI/Lexon Beauty Dashboard.pbix` using **Power BI Desktop** to explore the fully functional interactive report, modify time ranges using the date slicer, or drill down into individual customer segmentation profiles.
