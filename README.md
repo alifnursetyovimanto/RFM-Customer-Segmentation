@@ -4,7 +4,7 @@
 This project performs an end-to-end data analytics solution applying **Unsupervised Machine Learning (K-Means Clustering)** and **RFM (Recency, Frequency, Monetary)** analysis to segment customers of **Lexon Beauty**. The final output integrates a data pipeline built in Python with an executive-level interactive dashboard created in **Power BI Desktop** to provide actionable marketing recommendations for business growth.
 
 ## 📊 Executive Dashboard Preview
-![Lexon Beauty Dashboard Preview](dashboard_preview.png)
+![Lexon Beauty Dashboard Preview](Power%20BI/dashboard_preview.png)
 
 ## 🛠️ Tools & Libraries
 - **Data Engineering & Machine Learning (Python 3.x):** 
