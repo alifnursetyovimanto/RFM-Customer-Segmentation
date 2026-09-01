@@ -1,81 +1,523 @@
-# Lexon Beauty — Customer Segmentation using RFM & K-Means Clustering
+# Lexon Beauty — Customer Segmentation & Sales Analytics using RFM and K-Means
 
 ## 📌 Overview
-This project performs an end-to-end data analytics solution applying **Unsupervised Machine Learning (K-Means Clustering)** and **RFM (Recency, Frequency, Monetary)** analysis to segment customers of **Lexon Beauty**. The final output integrates a data pipeline built in Python with an executive-level interactive dashboard created in **Power BI Desktop** to provide actionable marketing recommendations for business growth.
 
-## 📊 Executive Dashboard Preview
-![Lexon Beauty Dashboard Preview](Power%20BI/dashboard_preview1.png)
+**Lexon Beauty Sales Analytics Dashboard** is an end-to-end retail data analytics project that transforms point-of-sale transaction data into actionable business insights.
 
-## 🛠️ Tools & Libraries
-- **Data Engineering & Machine Learning (Python 3.x):** 
-  - Jupyter Notebook
-  - Pandas & NumPy (Data manipulation & cleaning)
-  - Scikit-learn (K-Means clustering, PCA, standard preprocessing)
-  - Matplotlib & Seaborn (Exploratory statistical charts)
-- **Data Modeling & Visualization (Power BI Desktop):**
-  - Star Schema Data Architecture (`1-to-Many` Single-Direction Relationship)
-  - Custom DAX Engineering (Dynamic currency formatting and aggregated KPI metrics)
+The project combines **data cleaning, RFM (Recency, Frequency, Monetary) analysis, K-Means customer segmentation, product sales analysis, and interactive Power BI visualization** into an executive-level business intelligence solution.
 
-## 📊 Dataset & Anonymization Notice
-- **Source**: Real retail transaction details from MOKA POS (Lexon Beauty Store).
-- **Total Raw Transactions**: 7,439 rows.
-- **Data Cleaning Pipelines**:
-  - Handled missing Customer IDs and cleaned raw string phone numbers/emails.
-  - Excluded anomaly records and unmapped walk-in guest profiles to ensure revenue integrity.
-  - Final valid unique customers for ML pipeline & RFM profiling: **1,167** customers.
-- **🔒 Corporate Privacy Compliance**: Sensitive Personal Identifiable Information (PII) has been anonymized and masked using unique secure indexing codes (`CUST-00001` to `CUST-01167`) generated via DAX ranking.
+The completed Power BI dashboard provides an overview of sales performance, monthly sales trends, high-value customers, top-selling products, product-category contribution, and customer segmentation insights.
 
-## 📈 Project Methodology & Architecture
-1. **Data Cleaning & Anonymization:** Handled missing values, formatted chronological locale fields, and mapped raw customer identity values into a unified surrogate key (`CUST-00001`).
-2. **RFM Metrics Engineering:** 
-   - **Recency:** Days elapsed between the customer's last purchase date and reference cutoff date.
-   - **Frequency:** `DISTINCTCOUNT` of receipt numbers.
-   - **Monetary:** Sum of net sales spent per individual profile.
-3. **K-Means Clustering Evaluation:** Determined optimal clusters using the Elbow Method.
-4. **Cluster Validation:** Validated statistical quality using the Silhouette Score algorithm.
-5. **Dimensionality Reduction:** Applied PCA for 2D visual projection of customer clusters.
-6. **Data Modeling (Star Schema):** Relates dimension and fact tables via a clean `1-to-Many` (`1:*`) single-direction filter context.
-7. **Business Strategy Execution:** Formulated targeted operational strategies based on generated segment profiles.
+---
 
-## ⚙️ Key Technical Fix: Unique Customer ID (DAX)
-To prevent duplicate IDs per row and ensure every distinct customer maps to a single ID (`CUST-00001` to `CUST-01167`):
+## 📊 Executive Dashboard
 
-```dax
-Customer_ID_New = 
-"CUST-" & 
+![Lexon Beauty Sales Dashboard Preview](Power%20BI/dashboard_preview1.png)
+
+### Dashboard Highlights
+
+- **Total Penjualan:** Rp246.23 Juta
+- **Total Transaksi:** 2,413
+- **Rata-rata Transaksi (AOV):** Rp102,043
+- **Total Pelanggan:** 1,167
+- **Monthly Sales Trend**
+- **Top 5 Customers by Total Spending**
+- **Top 5 Products by Sales**
+- **Sales by Product Category**
+- **Year Filter:** 2025
+- Executive navigation for Dashboard, Sales, Products, Customers, Transactions, Report, Marketing, and Settings
+
+---
+
+## 🛠️ Tools & Technologies
+
+### Data Engineering & Machine Learning
+
+- Python 3.x
+- Jupyter Notebook / Google Colab
+- Pandas
+- NumPy
+- Scikit-learn
+  - K-Means Clustering
+  - Standardization
+  - PCA
+  - Silhouette Score
+- Matplotlib
+- Seaborn
+
+### Business Intelligence
+
+- Microsoft Power BI Desktop
+- Power Query
+- DAX
+- Star Schema data modeling
+- Interactive slicers and cross-filtering
+- KPI and Top-N measures
+
+---
+
+## 📂 Dataset
+
+### Source
+
+The project uses retail transaction data originating from the **MOKA POS system of Lexon Beauty**.
+
+### Data Volume
+
+- **Raw transaction-detail records:** 7,439 rows
+- **Final unique customer profiles:** 1,167 customers
+- **Anonymized customer IDs:** `CUST-00001` – `CUST-01167`
+
+The prepared data contains transaction, customer, product, category, quantity, receipt, date, and net-sales information required for business analysis.
+
+---
+
+## 🔐 Data Cleaning & Anonymization
+
+The data preparation pipeline includes:
+
+1. Handling missing customer identifiers.
+2. Cleaning inconsistent phone-number and email formats.
+3. Standardizing date and time fields.
+4. Removing anomaly records and unmapped walk-in guest profiles where necessary.
+5. Creating a unified customer surrogate key.
+6. Validating transaction and revenue consistency.
+7. Preparing item-level transaction data for product analysis.
+8. Mapping transaction records to customer segmentation profiles.
+
+Customer PII is not exposed in the dashboard. Instead, customers are represented using anonymized identifiers such as:
+
+```text
+CUST-00001
+CUST-00002
+CUST-00003
+...
+CUST-01167
+```
+
+---
+
+## 🧮 RFM Analysis
+
+Customer behavior is evaluated using three core RFM metrics.
+
+### Recency
+
+Measures how recently a customer made a purchase.
+
+```text
+Recency = Reference Date − Last Purchase Date
+```
+
+A lower Recency value indicates more recent activity.
+
+### Frequency
+
+Measures how often a customer purchases.
+
+```text
+Frequency = DISTINCTCOUNT(Receipt Number)
+```
+
+Using `DISTINCTCOUNT` prevents multiple item rows belonging to the same receipt from being counted as multiple transactions.
+
+### Monetary
+
+Measures the customer's total spending.
+
+```text
+Monetary = SUM(Net Sales)
+```
+
+---
+
+## 🤖 K-Means Customer Segmentation
+
+RFM variables are standardized before applying K-Means clustering.
+
+The optimal number of clusters was evaluated using the **Elbow Method**, followed by validation using the **Silhouette Score**.
+
+### Final Segments
+
+| Segment | Customers | Characteristics | Recommended Strategy |
+|---|---:|---|---|
+| **Pelanggan Setia (Loyal)** | 208 | High Frequency and Monetary contribution with relatively recent activity | VIP loyalty, rewards, early product access, exclusive offers |
+| **Pelanggan Potensial (Promising)** | 431 | Moderate frequency with stable monetary contribution | Cross-selling, upselling, bundles, personalized recommendations |
+| **Pelanggan Berisiko (At-Risk)** | 528 | Higher Recency with lower frequency and spending | Win-back campaigns, personalized vouchers, limited-time promotions |
+
+**Total customers: 1,167**
+
+### Model Evaluation
+
+- **Silhouette Score:** 0.36
+- **Optimal clusters:** 3
+
+PCA was also used to project the customer clusters into two dimensions for visual inspection.
+
+---
+
+# 📈 Sales Analytics in Power BI
+
+The completed dashboard adds an executive sales-performance layer on top of the customer segmentation analysis.
+
+## 1. Monthly Sales Trend
+
+The line chart displays monthly sales performance and makes it easier to identify:
+
+- Sales peaks and declines
+- Monthly seasonality
+- Changes in business performance
+- Periods requiring further investigation
+
+---
+
+## 2. Top 5 Customers by Total Spending
+
+Customers are ranked according to accumulated net sales contribution.
+
+Customer IDs are anonymized to protect customer privacy while still allowing customer-level analysis.
+
+The ranking dynamically responds to the selected reporting period.
+
+---
+
+## 3. Top 5 Products by Sales
+
+Product performance is analyzed at the **item/product level**, rather than treating a receipt number as a product.
+
+A single receipt can contain multiple products.
+
+For example:
+
+```text
+Receipt 3BOGHN
+├── Wardah Glasting Liquid Lip 01 Caramel Coat
+├── Wardah Glasting Liquid Lip 04 Rosewood Radiance
+├── Wardah Perfect Bright Creamy Foam Bright + Oil Control 100 ml
+└── Wardah Colorfit Perfect Glow Cushion 21W Linen
+```
+
+Therefore:
+
+```text
+Receipt Number = Transaction
+SKU / Variant  = Product
+```
+
+The product-detail preparation uses the **Receipt Number** to determine which products belong to each transaction, while product-level identifiers such as **SKU** and **Variant** are used to identify the products themselves.
+
+This approach allows product sales to be aggregated correctly at the product level and used for Top-N product analysis.
+
+### Product Analysis Logic
+
+The product analysis follows this structure:
+
+```text
+Receipt Number
+      ↓
+Identify all items purchased in the receipt
+      ↓
+Match Product / Variant / SKU
+      ↓
+Create item-level product records
+      ↓
+Aggregate product sales
+      ↓
+Rank products
+      ↓
+Top 5 Products by Sales
+```
+
+This prevents the analysis from incorrectly treating one receipt as one product.
+
+---
+
+## 4. Sales by Product Category
+
+The dashboard summarizes net sales contribution by product category.
+
+The category-level analysis supports business decisions related to:
+
+- Product assortment
+- Inventory planning
+- Promotional campaigns
+- Category-level marketing
+- Cross-selling opportunities
+
+---
+
+# 💡 Business Insights
+
+## 1. Loyal Customers — 208
+
+The **208 Loyal customers** represent the highest-value relationship group and should receive retention-focused treatment.
+
+### Recommended Actions
+
+- VIP / loyalty tiers
+- Exclusive promotions
+- Early access to new products
+- Personalized recommendations
+- Customer rewards
+
+---
+
+## 2. Promising Customers — 431
+
+The **431 Promising customers** represent a significant growth opportunity.
+
+### Recommended Actions
+
+- Cross-selling
+- Upselling
+- Product bundles
+- Personalized skincare recommendations
+- Product education campaigns
+
+---
+
+## 3. At-Risk Customers — 528
+
+The **528 At-Risk customers** represent the largest customer segment and a major reactivation opportunity.
+
+### Recommended Actions
+
+- Win-back campaigns
+- Personalized discount vouchers
+- Limited-time offers
+- Targeted messaging
+- Recommendations based on previous purchases
+
+> **Key Insight: 528 At-Risk customers require a targeted re-engagement campaign to recover inactive customer relationships and create opportunities for repeat purchases.**
+
+---
+
+# 🏗️ Data Architecture
+
+The Power BI model follows a structured analytical approach using a **Star Schema** where appropriate.
+
+```text
+                    ┌─────────────────┐
+                    │   Date Table    │
+                    └────────┬────────┘
+                             │
+                             ▼
+┌────────────────┐     ┌──────────────────────────┐
+│ Customer / RFM │ ──► │ Transaction / Detail    │
+│ Dimension      │     │ Fact Data               │
+└────────────────┘     └────────────┬─────────────┘
+                                    │
+                                    ▼
+                           ┌─────────────────┐
+                           │ Product Detail  │
+                           └─────────────────┘
+```
+
+Relationships are designed around appropriate business keys using **1-to-Many (`1:*`) single-direction filtering** where applicable.
+
+---
+
+# 🧠 Key DAX Engineering
+
+## Anonymized Customer ID
+
+```DAX
+Customer_ID_New =
+"CUST-" &
 FORMAT(
     RANKX(
-        ALL('transaction_details_with_segments'[Customer]), 
-        'transaction_details_with_segments'[Customer], 
-        , 
-        ASC, 
+        ALL('transaction_details_with_segments'[Customer]),
+        'transaction_details_with_segments'[Customer],
+        ,
+        ASC,
         Dense
-    ), 
+    ),
     "00000"
 )
 ```
 
-## 🎯 Results & Business Insights
+## Frequency
 
-### Optimal Clusters: **3 Segments**
+```DAX
+Frequency =
+DISTINCTCOUNT(
+    'transaction_details_with_segments'[Receipt Number]
+)
+```
 
-| Segment | Number of Customers | Key Characteristics | Strategic Business Recommendation |
-| --- | --- | --- | --- |
-| **Pelanggan Setia (Loyal)** | 208 | High Frequency & High Monetary, Low Recency | Reward with premium tier loyalty programs, early access to new product drops, and exclusive VIP offers. |
-| **Pelanggan Potensial (Promising)** | 431 | Moderate transaction frequency, stable monetary contribution. | Encourage increased cross-selling and up-selling spending habits through personalized skincare routine recommendations. |
-| **Pelanggan Berisiko (At-Risk)** | 528 | High Recency (Inactive), Low Frequency & low spend. | Run re-engagement win-back campaigns, utilize push notifications, and offer time-limited beauty promo vouchers. |
+## Monetary
 
-### Model & Analytics Performance
+```DAX
+Monetary =
+SUM(
+    'transaction_details_with_segments'[Net Sales]
+)
+```
 
-* **Machine Learning Model Validation:** **Silhouette Score of 0.36** (acceptable for real-world retail point-of-sale data containing commercial noise).
-* **Dashboard Integrity:**
-* **Total Penjualan Bersih (Net Sales):** `Rp246.23 Juta`
-* **Total Transaksi (Total Transactions):** `2,413 Transaksi`
-* **Rata-rata Transaksi (AOV):** `Rp102,043`
-* **Total Pelanggan (Total Active Customers):** `1,167 Pelanggan`
+These calculations support customer profiling and dashboard KPI calculations while avoiding incorrect transaction counts caused by multiple item rows within a receipt.
 
-## 🚀 How to Open the Project
+---
 
-1. Clone this repository to your local computer.
-2. Open `RFM_Model_Analysis.ipynb` inside Jupyter Notebook/Google Colab to view the Python workflow.
-3. Open `Power BI/Lexon Beauty Dashboard.pbix` using **Power BI Desktop** to explore the interactive report.
+# 🎨 Dashboard Design
+
+The completed dashboard follows an executive BI design system:
+
+| Design Element | Specification |
+|---|---|
+| Primary Color | `#2E86AB` |
+| Secondary Color | `#A23B72` |
+| Accent Color | `#F18F01` |
+| Background | White / Very Light Gray |
+| Typography | Modern Sans-Serif |
+| Layout | Grid-Based Executive Dashboard |
+| Visuals | KPI Cards, Line Chart, Bar Charts, Donut Chart |
+| Filter | Year / Date Filter |
+
+The dashboard emphasizes:
+
+- Clean visual hierarchy
+- Business readability
+- Consistent spacing
+- Minimal visual clutter
+- Executive-level presentation
+- Actionable data storytelling
+
+---
+
+# 📁 Project Structure
+
+```text
+Lexon-Beauty/
+│
+├── RFM_Model_Analysis.ipynb
+│
+├── Power BI/
+│   ├── Lexon Beauty Dashboard.pbix
+│   └── dashboard_preview1.png
+│
+└── README.md
+```
+
+---
+
+# 🚀 How to Open the Project
+
+## 1. Python / RFM Analysis
+
+Open:
+
+```text
+RFM_Model_Analysis.ipynb
+```
+
+using **Jupyter Notebook** or **Google Colab**.
+
+The notebook contains:
+
+- Data preparation
+- Data cleaning
+- RFM calculation
+- Customer profiling
+- K-Means clustering
+- Elbow Method evaluation
+- Silhouette Score evaluation
+- PCA visualization
+- Customer segmentation analysis
+
+---
+
+## 2. Power BI Dashboard
+
+Open:
+
+```text
+Power BI/Lexon Beauty Dashboard.pbix
+```
+
+using **Power BI Desktop**.
+
+The PBIX file contains:
+
+- Executive dashboard
+- KPI cards
+- Sales trend analysis
+- Top customer analysis
+- Top product analysis
+- Product category analysis
+- Customer segmentation
+- DAX calculations
+- Interactive filters
+- Data model
+
+---
+
+# 🎯 Project Objective
+
+The primary objective of this project is to demonstrate how raw retail transaction data can be transformed into a practical decision-support system.
+
+The complete analytical workflow is:
+
+```text
+Raw POS Data
+      ↓
+Data Cleaning
+      ↓
+Customer & Product Preparation
+      ↓
+RFM Analysis
+      ↓
+K-Means Clustering
+      ↓
+Customer Segmentation
+      ↓
+Sales Analytics
+      ↓
+Power BI Executive Dashboard
+      ↓
+Actionable Business Strategy
+```
+
+The final solution helps Lexon Beauty understand:
+
+- **Who are the customers?**
+- **How frequently do they purchase?**
+- **How much do they spend?**
+- **Which products generate the most sales?**
+- **Which product categories contribute the most revenue?**
+- **Which customers are loyal, promising, or at risk?**
+- **What marketing actions should be prioritized?**
+
+---
+
+# 📌 Key Project Results
+
+| Metric | Result |
+|---|---:|
+| Raw Transaction Details | 7,439 rows |
+| Unique Customers | 1,167 |
+| Total Net Sales | Rp246.23 Juta |
+| Total Transactions | 2,413 |
+| Average Transaction | Rp102,043 |
+| Customer Segments | 3 |
+| Loyal Customers | 208 |
+| Promising Customers | 431 |
+| At-Risk Customers | 528 |
+| Silhouette Score | 0.36 |
+
+---
+
+# 👤 Author
+
+**Alif Nursetyo Vimanto**
+
+Data Analytics / Data Science Project
+
+---
+
+# 📌 Disclaimer
+
+This project is intended for analytical and portfolio purposes.
+
+Customer information shown in the project has been anonymized using surrogate customer identifiers. No personally identifiable customer information is intentionally exposed in the final dashboard.
+
+The dashboard and analytical results are based on the prepared dataset and business rules defined throughout the project.
